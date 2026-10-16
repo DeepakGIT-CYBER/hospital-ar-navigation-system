@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+
+background:#eef5ff;
+
+font-family:Poppins,sans-serif;
+
+}
+
+header{
+
+background:#0066cc;
+
+color:white;
+
+padding:20px;
+
+text-align:center;
+
+font-size:30px;
+
+font-weight:bold;
+
+}
+
+.container{
+
+width:90%;
+
+margin:30px auto;
+
+}
+
+.cards{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:25px;
+
+margin-bottom:40px;
+
+}
+
+.card{
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+box-shadow:0 10px 20px rgba(0,0,0,.15);
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.card h2{
+
+color:#0066cc;
+
+margin-bottom:15px;
+
+}
+
+.card p{
+
+font-size:20px;
+
+}
+
+.buttons{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:20px;
+
+}
+
+button{
+
+padding:18px;
+
+font-size:18px;
+
+background:#0066cc;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#004999;
+
+}
+
+footer{
+
+margin-top:50px;
+
+text-align:center;
+
+padding:20px;
+
+background:#111827;
+
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+🏥 Hospital Navigation Dashboard
+
+</header>
+
+<div class="container">
+
+<div class="cards">
+
+<div class="card">
+
+<h2>Current Location</h2>
+
+<p>Reception</p>
+
+</div>
+
+<div class="card">
+
+<h2>Destination</h2>
+
+<p id="dest">Loading...</p>
+
+</div>
+
+<div class="card">
+
+<h2>Estimated Time</h2>
+
+<p>1 Minute</p>
+
+</div>
+
+<div class="card">
+
+<h2>Distance</h2>
+
+<p>20 Meters</p>
+
+</div>
+
+</div>
+
+<div class="buttons">
+
+<button onclick="location.href='map.html'">
+
+🗺 Open Hospital Map
+
+</button>
+
+<button onclick="location.href='camera.html'">
+
+📷 Open AR Camera
+
+</button>
+
+<button onclick="voiceGuide()">
+
+🎤 Voice Navigation
+
+</button>
+
+<button onclick="location.href='about.html'">
+
+📖 Project Details
+
+</button>
+
+<button onclick="location.href='index.html'">
+
+🏠 Home
+
+</button>
+
+<button onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+</div>
+
+</div>
+
+<footer>
+
+AR Based Indoor Navigation for Hospitals | M.Tech Project
+
+</footer>
+
+<script>
+
+let destination=localStorage.getItem("destination");
+
+if(destination==null){
+
+destination="Emergency";
+
+}
+
+document.getElementById("dest").innerHTML=destination;
+
+function voiceGuide(){
+
+let msg=new SpeechSynthesisUtterance();
+
+msg.text="Welcome. Your selected destination is "+destination+". Please open the hospital map to begin navigation.";
+
+speechSynthesis.speak(msg);
+
+}
+
+function logout(){
+
+localStorage.clear();
+
+location.href="login.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

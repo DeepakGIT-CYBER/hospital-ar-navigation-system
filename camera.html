@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AR Camera Navigation</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+overflow:hidden;
+background:black;
+}
+
+#camera{
+width:100vw;
+height:100vh;
+background:url("https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=1600") center center/cover;
+position:relative;
+}
+
+.overlay{
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.25);
+}
+
+/* Compass */
+
+#compass{
+
+position:absolute;
+
+top:25px;
+
+left:25px;
+
+width:90px;
+
+height:90px;
+
+background:white;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:34px;
+
+font-weight:bold;
+
+box-shadow:0 0 20px black;
+
+animation:spin 8s linear infinite;
+
+}
+
+@keyframes spin{
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/* Arrow */
+
+.arrow{
+
+position:absolute;
+
+top:45%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+font-size:130px;
+
+animation:bounce 1s infinite;
+
+transition:.5s;
+
+}
+
+@keyframes bounce{
+
+0%{
+
+transform:translate(-50%,-50%);
+
+}
+
+50%{
+
+transform:translate(-50%,-60%);
+
+}
+
+100%{
+
+transform:translate(-50%,-50%);
+
+}
+
+}
+
+/* Distance */
+
+.distance{
+
+position:absolute;
+
+top:30px;
+
+right:30px;
+
+background:#0066cc;
+
+padding:15px 25px;
+
+border-radius:50px;
+
+font-size:24px;
+
+color:white;
+
+font-weight:bold;
+
+}
+
+/* Info */
+
+.info{
+
+position:absolute;
+
+bottom:30px;
+
+left:30px;
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+width:330px;
+
+box-shadow:0 0 20px rgba(0,0,0,.3);
+
+}
+
+.info h2{
+
+color:#0066cc;
+
+margin-bottom:10px;
+
+}
+
+.info p{
+
+font-size:19px;
+
+margin:10px 0;
+
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+margin-top:15px;
+
+background:#0066cc;
+
+color:white;
+
+border:none;
+
+font-size:18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#004999;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="camera">
+
+<div class="overlay"></div>
+
+<div id="compass">
+
+🧭
+
+</div>
+
+<div class="distance" id="distance">
+
+20 m
+
+</div>
+
+<div class="arrow" id="arrow">
+
+⬆️
+
+</div>
+
+<div class="info">
+
+<h2>
+
+AR Navigation
+
+</h2>
+
+<p>
+
+Destination :
+<b id="destination"></b>
+
+</p>
+
+<p id="status">
+
+Status : Move Straight
+
+</p>
+
+<p>
+
+Estimated Time : 1 Minute
+
+</p>
+
+<button onclick="voice()">
+
+🎤 Voice Navigation
+
+</button>
+
+<button onclick="location.href='index.html'">
+
+🏠 Home
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let destination=localStorage.getItem("destination") || "Emergency";
+
+document.getElementById("destination").innerHTML=destination;
+
+let arrow=document.getElementById("arrow");
+
+switch(destination){
+
+case "Emergency":
+arrow.innerHTML="⬅️";
+break;
+
+case "Cardiology":
+arrow.innerHTML="➡️";
+break;
+
+case "Neurology":
+arrow.innerHTML="⬆️";
+break;
+
+case "ICU":
+arrow.innerHTML="⬆️";
+break;
+
+case "Orthopedics":
+arrow.innerHTML="↙️";
+break;
+
+case "Pharmacy":
+arrow.innerHTML="⬇️";
+break;
+
+case "Radiology":
+arrow.innerHTML="↗️";
+break;
+
+case "Laboratory":
+arrow.innerHTML="➡️";
+break;
+
+case "Blood Bank":
+arrow.innerHTML="↖️";
+break;
+
+case "Operation Theatre":
+arrow.innerHTML="⬆️";
+break;
+
+case "Cafeteria":
+arrow.innerHTML="⬇️";
+break;
+
+default:
+arrow.innerHTML="⬆️";
+
+}
+
+let d=20;
+
+let timer=setInterval(function(){
+
+d--;
+
+document.getElementById("distance").innerHTML=d+" m";
+
+if(d<=0){
+
+clearInterval(timer);
+
+document.getElementById("distance").innerHTML="✔ Arrived";
+
+document.getElementById("status").innerHTML="Status : Destination Reached";
+
+}
+
+},1000);
+
+function voice(){
+
+let msg=new SpeechSynthesisUtterance();
+
+msg.text="Navigation started. Move in the direction of the arrow. Your destination is "+destination+". Distance twenty meters.";
+
+speechSynthesis.speak(msg);
+
+}
+
+</script>
+
+</body>
+
+</html>
